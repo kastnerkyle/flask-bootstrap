@@ -24,6 +24,18 @@ User = get_user_class(db.Model)
 def index():
     return render_template('index.html')
 
+def about():
+    return render_template('about.html')
+
+def contact():
+    return render_template('contact.html')
+
+def bandcamp():
+    return render_template('bandcamp.html')
+
+def other():
+    return render_template('other.html')
+
 ##login methods
 
 def login():
@@ -71,10 +83,13 @@ def logout_view():
 
 # URLs
 app.add_url_rule('/', 'index', index)
-app.add_url_rule('/login/', 'login', login, methods=['GET', 'POST'])
-app.add_url_rule('/home/', 'home', home)
-app.add_url_rule('/users/create/', 'user_create', user_create, methods=['GET', 'POST'])
-app.add_url_rule('/logout/', 'logout', logout_view)
+app.add_url_rule('/about/', 'about', about)
+app.add_url_rule('/contact/', 'contact', contact)
+app.add_url_rule('/bandcamp/', 'bandcamp', bandcamp)
+app.add_url_rule('/other/', 'other', other)
+#app.add_url_rule('/login/', 'login', login, methods=['GET', 'POST'])
+#app.add_url_rule('/users/create/', 'user_create', user_create, methods=['GET', 'POST'])
+#app.add_url_rule('/logout/', 'logout', logout_view)
 
 # Secret key needed to use sessions.
 app.secret_key = 'mysecretkey'
@@ -84,4 +99,4 @@ if __name__ == "__main__":
         open('/tmp/app.db')
     except IOError:
         db.create_all()
-    app.run(debug=True,host='127.0.0.1')
+    app.run(debug=True,host='0.0.0.0',port=80)
