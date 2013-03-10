@@ -20,24 +20,7 @@ def shutdown_session(exception=None):
 auth = Auth(app, login_url_name='login')
 User = get_user_class(db.Model)
 
-
-def index():
-    return render_template('index.html')
-
-def about():
-    return render_template('about.html')
-
-def contact():
-    return render_template('contact.html')
-
-def bandcamp():
-    return render_template('bandcamp.html')
-
-def other():
-    return render_template('other.html')
-
 ##login methods
-
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -81,12 +64,28 @@ def logout_view():
         msg = 'Logged out user {0}.'.format(user_data['username'])
         return render_template('logout.html', msg=msg)
 
+@app.route("/")
+def index():
+    return render_template('index.html')
+
+@app.route("/about/")
+def about():
+    return render_template('about.html')
+
+@app.route("/bandcamp/")
+def bandcamp():
+    return render_template('bandcamp.html')
+
+@app.route("/other/")
+def other():
+    return render_template('other.html')
+
 # URLs
-app.add_url_rule('/', 'index', index)
-app.add_url_rule('/about/', 'about', about)
-app.add_url_rule('/contact/', 'contact', contact)
-app.add_url_rule('/bandcamp/', 'bandcamp', bandcamp)
-app.add_url_rule('/other/', 'other', other)
+#app.add_url_rule('/', 'index', index)
+#app.add_url_rule('/about/', 'about', about)
+#app.add_url_rule('/contact/', 'contact', contact)
+#app.add_url_rule('/bandcamp/', 'bandcamp', bandcamp)
+#app.add_url_rule('/other/', 'other', other)
 #app.add_url_rule('/login/', 'login', login, methods=['GET', 'POST'])
 #app.add_url_rule('/users/create/', 'user_create', user_create, methods=['GET', 'POST'])
 #app.add_url_rule('/logout/', 'logout', logout_view)
