@@ -80,6 +80,21 @@ def bandcamp():
 def other():
     return render_template('other.html')
 
+@app.route("/other/music/")
+def other_music():
+    return render_template('other-music.html')
+
+@app.route("/other/videos/")
+def other_videos():
+    return render_template('other-videos.html')
+
+@app.route("/other/images/")
+def other_images():
+    return render_template('other-images.html')
+
+@app.route("/other/games/")
+def other_games():
+    return render_template('other-games.html')
 # URLs
 #app.add_url_rule('/', 'index', index)
 #app.add_url_rule('/about/', 'about', about)

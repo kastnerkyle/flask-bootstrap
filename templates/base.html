@@ -36,13 +36,13 @@
        For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
   <script src="/static/js/libs/modernizr-2.0.6.min.js"></script>
 </head>
-
 <body>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-block alert-error fade in">
-                    <a class="close" data-dismiss="alert" href="#">×</a>
+                    <a class="close" data-dismiss="alert" href="">×</a>
+                    <a class="close" data-dismiss="alert" href="">×</a>
                       {{ message }}
                 </div>
             {% endfor %}
@@ -58,14 +58,11 @@
             <span class="icon-bar"></span> 
             <span class="icon-bar"></span> 
           </a> 
-          <a class="brand" href="#">Kyle Kastner</a> 
+          <a class="brand" href="">Audiospade</a> 
           <div class="nav-collapse"> 
             <ul class="nav"> 
-              <!-- <li class="active"><a href="/">Home</a></li> -->
-              <li><a href="/about">About</a></li> 
-              <li><a href="/contact">Contact</a></li>
-              <!-- <li><a href="/login/">Login</a></li> -->
-              <!-- <li><a href="/users/create/">Signup</a></li> -->               
+              <li><a href="/">Home</a></li>
+              <li class="active"><a href="/about">About</a></li> 
             </ul> 
           </div><!--/.nav-collapse --> 
         </div> 
@@ -78,12 +75,14 @@
         </header>
 
         <div id="main" role="main">
+          <div class="container">
             {% block main %}{% endblock %}
+            <hr>
+            <footer>
+              <p>&copy; Audiospade 2013</p>
+            </footer>
+          </div>
         </div>
-
-        <footer>
-            {% block footer %}{% endblock %}
-        </footer>
     </div> <!-- end of #container -->
 
 

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Wanderers{% endblock %}
+
+{% block main %}
+        <div class="hero-unit">
+            <div id="mollusksAndMachines" class="carousel slide">
+            <!-- Carousel items -->
+                <div class="carousel-inner">
+                    <div class="active item">
+                        <img src="/static/img/nassa.gif" alt="" />
+                        <div class="carousel-caption" align="center">
+                            <p>All images courtesy of http://srufaculty.sru.edu/david.dailey/public/machines.html</p> 
+                        </div>
+                    </div>
+                    <div class="item">
+                    <script type="text/javascript">
+                        document.write('<img src="/static/img/murex.gif"></div>')
+                    </script>
+                    </div>
+                </div>
+            <!-- Carousel nav -->
+                <a class="carousel-control left" href="#mollusksAndMachines" data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#mollusksAndMachines" data-slide="next">&rsaquo;</a>
+            </div>
+        </div>
+{% endblock %}
