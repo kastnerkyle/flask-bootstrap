@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% set active_page = 'home' %}
 {% block title %}Welcome{% endblock %}
 
 {% block main %}
@@ -13,12 +13,12 @@
             <div class="span4" align="center">
               <h3 align="center">Are you from Bandcamp?</h3> 
               <p align="center">Did you arrive here on a mission from Bandcamp? If so, click the button below.</p> 
-              <p align="center"><a class="btn btn-info btn-large" href="/bandcamp/">Bandcampers&raquo;</a></p> 
+              <p align="center"><a class="btn btn-primary btn-large" href="/bandcamp/">Bandcampers &raquo;</a></p> 
             </div> 
             <div class="span4" align="center">
               <h3 align="center">Elsewhere?</h3> 
               <p align="center">Stumbled here out of the darkness? Click the button below for a surprise. </p> 
-              <p align="center"><a class="btn btn-warning btn-large" href="/other/">I'm not from around here!&raquo;</a></p> 
+              <p align="center"><a class="btn btn-primary btn-large" href="/other/">I'm not from around here! &raquo;</a></p> 
             </div> 
           </div>
       </div> 

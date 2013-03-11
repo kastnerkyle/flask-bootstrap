@@ -1,26 +1,25 @@
 {% extends "base.html" %}
-
+{% set active_page = 'other' %}
 {% block title %}Wanderers{% endblock %}
 
 {% block main %}
       <div class="hero-unit"> 
-        <h2 align="center">You have wandered far, traveler</h2>
-        <p align="center">Choose your adventure</p> 
+        <h2 align="center">Choose your adventure</h2>
         <hr>
         <div class="row">
             <div class="span1">
             </div>
             <div class="span2" align="center">
-                <p align="center"><a class="btn btn-info btn-large" href="/other/music/"><i class="icon-music"></i> Music</a></p>
+                <p align="center"><a class="btn btn-primary btn-large" href="/other/music/"><i class="icon-music"></i> Music</a></p>
             </div>
             <div class="span2" align="center">
-                <p align="center"><a class="btn btn-info btn-large" href="/other/videos/"><i class="icon-film"></i> Videos</a></p>
+                <p align="center"><a class="btn btn-primary btn-large" href="/other/videos/"><i class="icon-film"></i> Videos</a></p>
             </div>
             <div class="span2" align="center">
-                <p align="center"><a class="btn btn-info btn-large" href="/other/images/"><i class="icon-picture"></i> Images</a></p>
+                <p align="center"><a class="btn btn-primary btn-large" href="/other/images/"><i class="icon-picture"></i> Images</a></p>
             </div>
             <div class="span2" align="center">
-                <p align="center"><a class="btn btn-info btn-large" href="/other/games/"><i class="icon-magnet"></i> Games</a></p>
+                <p align="center"><a class="btn btn-primary btn-large" href="/other/games/"><i class="icon-magnet"></i> Games</a></p>
             </div>
         </div>
       </div>
