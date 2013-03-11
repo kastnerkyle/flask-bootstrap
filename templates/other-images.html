@@ -3,23 +3,23 @@
 {% block title %}Wanderers{% endblock %}
 
 {% block main %}
+            <h2 align="center">Mollusks and Machines</h2>
             <div id="mollusksAndMachines" class="carousel slide">
             <!-- Carousel items -->
               <div class="carousel-inner">
                 <div class="active item">
-                  <img src="/static/img/nassa.gif" alt="" />
+                  <img src="/static/img/{{ images[0] }}" alt="" />
                   <div class="carousel-caption" align="center">
                     <p>All images courtesy of http://srufaculty.sru.edu/david.dailey/public/machines.html</p> 
                   </div>
                 </div>
-                <div class="item">
-                  <script type="text/javascript">
-                    document.write('<img src="/static/img/murex.gif"></div>')
-                  </script>
-                </div>
+                {% for img in images[1:] %}
+                  <div class="item">
+                    <img src="/static/img/{{ img }}" alt="" />
+                  </div>
+                {% endfor %}
               </div>
               <!-- Carousel nav -->
               <a class="carousel-control left" href="#mollusksAndMachines" data-slide="prev">&lsaquo;</a>
               <a class="carousel-control right" href="#mollusksAndMachines" data-slide="next">&rsaquo;</a>
-              <!-- /div> Ending div seems to break footer... something is amiss -->
 {% endblock %}

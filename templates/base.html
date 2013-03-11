@@ -55,11 +55,11 @@
             <span class="icon-bar"></span> 
             <span class="icon-bar"></span> 
           </a> 
-          <a class="brand" href="">Audiospade</a> 
+          <a class="brand" href="/">Audiospade</a> 
           <div class="nav-collapse"> 
             {% set navigation_bar = [('/', 'home', 'Home'),
                                      ('/about/', 'about', 'About'),
-                                     ('/other/', 'other', 'Other')] -%}
+                                     ('/other/', 'other', 'Other')] %}
             <ul class="nav"> 
               {% for href, id, text in navigation_bar %}
                   <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href }}">{{ text }}</a></li>

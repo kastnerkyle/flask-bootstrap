@@ -4,6 +4,7 @@ from models.database import db_session
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.auth import Auth, AuthUser, login_required, logout
 from models.sa import get_user_class
+import os
 
 app = Flask(__name__)
 app.config.from_pyfile('app.cfg')
@@ -90,7 +91,7 @@ def other_videos():
 
 @app.route("/other/images/")
 def other_images():
-    return render_template('other-images.html')
+    return render_template('other-images.html', images=os.listdir('/home/deploy/src/flask-bootstrap/static/img'))
 
 @app.route("/other/games/")
 def other_games():
