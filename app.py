@@ -73,9 +73,9 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route("/bandcamp/")
-def bandcamp():
-    return render_template('bandcamp.html')
+@app.route("/share/")
+def share():
+    return render_template('share.html')
 
 @app.route("/other/")
 def other():
