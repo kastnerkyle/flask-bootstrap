@@ -156,17 +156,17 @@ function gotStream(stream){
 function call() {
 $('.button_call').button();
 $('.button_call').button('loading');
-  console.log("Starting call");
+  trace("Starting call");
   var servers = null;
   var pc_constraints = {"optional": []};
   pc1 = new RTCPeerConnection(servers,pc_constraints);
-  console.log("Created local peer connection object pc1");
+  trace("Created local peer connection object pc1");
   pc1.onicecandidate = iceCallback1; 
   pc2 = new RTCPeerConnection(servers,pc_constraints);
-  console.log("Created remote peer connection object pc2");
+  trace("Created remote peer connection object pc2");
   pc2.onicecandidate = iceCallback2;
   pc2.onaddstream = gotRemoteStream; 
-  console.log("Requesting local stream");
+  trace("Requesting local stream");
   // Call into getUserMedia via the polyfill (adapter.js).
   getUserMedia({audio:true, video:false},
                 gotStream, function() {});
