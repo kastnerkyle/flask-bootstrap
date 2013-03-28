@@ -1,10 +1,220 @@
 {% extends "base.html" %}
 {% set active_page = 'share' %}
-{% block title %}Share{% endblock %}
-
+{% block title %}Cheesy{% endblock %}
 {% block main %}
-      <div class="hero-unit"> 
-        <h2 align="center">Share Some Tunes (Legally!)</h2>
-        <hr>
-      </div>
+    <div class="hero-unit">
+        <div class="row">
+            <div class="span9" align="center">
+                <h2 align="center">Local Audio</h2>
+            </div>
+        </div>  
+        <div class="row">
+            <div class="span9" align="center">
+                <audio align="center" id="audio1" autoplay="autoplay" controls="controls" muted="true"></audio>
+            </div>
+        </div>  
+        <br><br> 
+        <div class="row">
+            <div class="span9" align="center">
+                <h2 align="center">Remote Audio</h2>
+            </div>
+        </div>  
+        <div class="row">
+            <div class="span9" align="center">
+                <audio align="center" id="audio2" autoplay="autoplay" controls="controls" muted="true"></audio>
+            </div>
+        </div>   
+        <br><br>
+        <div class="row">
+            <div class="span1" align="center"></div>
+            <div class="span4" align="center">
+                <p align="center"><a class="btn btn-primary btn-large" id="button_call" data-text-loading="WIT" onclick="call()" href="#"><i class="icon-volume-up"></i> Call</a></p>
+            </div>
+            <div class="span4" align="center">
+                <p align="center"><a class="btn btn-primary btn-large" id="button_hangup" onclick="hangup()"><i class="icon-volume-off"></i> Hangup</a></p>
+            </div>
+        </div>
+    </div>
+<script>
+var RTCPeerConnection = null;
+var getUserMedia = null;
+var attachMediaStream = null;
+var reattachMediaStream = null;
+var webrtcDetectedBrowser = null;
+
+function trace(text) {
+  // This function is used for logging.
+  if (text[text.length - 1] == '\n') {
+    text = text.substring(0, text.length - 1);
+  }
+  console.log((performance.now() / 1000).toFixed(3) + ": " + text);
+}
+
+if (navigator.mozGetUserMedia) {
+  console.log("This appears to be Firefox");
+
+  webrtcDetectedBrowser = "firefox";
+
+  // The RTCPeerConnection object.
+  RTCPeerConnection = mozRTCPeerConnection;
+
+  // The RTCSessionDescription object.
+  RTCSessionDescription = mozRTCSessionDescription;
+
+  // The RTCIceCandidate object.
+  RTCIceCandidate = mozRTCIceCandidate;
+
+  // Get UserMedia (only difference is the prefix).
+  // Code from Adam Barth.
+  getUserMedia = navigator.mozGetUserMedia.bind(navigator);
+
+  // Attach a media stream to an element.
+  attachMediaStream = function(element, stream) {
+    console.log("Attaching media stream");
+    element.mozSrcObject = stream;
+    element.play();
+  };
+
+  reattachMediaStream = function(to, from) {
+    console.log("Reattaching media stream");
+    to.mozSrcObject = from.mozSrcObject;
+    to.play();
+  };
+
+  // Fake get{Video,Audio}Tracks
+  MediaStream.prototype.getVideoTracks = function() {
+    return [];
+  };
+
+  MediaStream.prototype.getAudioTracks = function() {
+    return [];
+  };
+} else if (navigator.webkitGetUserMedia) {
+  console.log("This appears to be Chrome");
+
+  webrtcDetectedBrowser = "chrome";
+
+  // The RTCPeerConnection object.
+  RTCPeerConnection = webkitRTCPeerConnection;
+
+  // Get UserMedia (only difference is the prefix).
+  // Code from Adam Barth.
+  getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
+
+  // Attach a media stream to an element.
+  attachMediaStream = function(element, stream) {
+    element.src = webkitURL.createObjectURL(stream);
+  };
+
+  reattachMediaStream = function(to, from) {
+    to.src = from.src;
+  };
+
+  // The representation of tracks in a stream is changed in M26.
+  // Unify them for earlier Chrome versions in the coexisting period.
+  if (!webkitMediaStream.prototype.getVideoTracks) {
+    webkitMediaStream.prototype.getVideoTracks = function() {
+      return this.videoTracks;
+    };
+    webkitMediaStream.prototype.getAudioTracks = function() {
+      return this.audioTracks;
+    };
+  }
+
+  // New syntax of getXXXStreams method in M26.
+  if (!webkitRTCPeerConnection.prototype.getLocalStreams) {
+    webkitRTCPeerConnection.prototype.getLocalStreams = function() {
+      return this.localStreams;
+    };
+    webkitRTCPeerConnection.prototype.getRemoteStreams = function() {
+      return this.remoteStreams;
+    };
+  }
+} else {
+  console.log("Browser does not appear to be WebRTC-capable");
+}
+
+var pc1,pc2;
+var localstream;
+var sdpConstraints = {'mandatory': {
+                        'OfferToReceiveAudio':true, 
+                        'OfferToReceiveVideo':false }};
+
+function gotStream(stream){
+  trace("Received local stream");
+  // Call the polyfill wrapper to attach the media stream to this element.
+  localstream = stream;
+  audioTracks = localstream.getAudioTracks();
+  if (audioTracks.length > 0)
+    trace('Using Audio device: ' + audioTracks[0].label);
+  pc1.addStream(localstream);
+  trace("Adding Local Stream to peer connection");
+  
+  pc1.createOffer(gotDescription1);
+}
+  
+function call() {
+$('.button_call').button();
+$('.button_call').button('loading');
+  console.log("Starting call");
+  var servers = null;
+  var pc_constraints = {"optional": []};
+  pc1 = new RTCPeerConnection(servers,pc_constraints);
+  console.log("Created local peer connection object pc1");
+  pc1.onicecandidate = iceCallback1; 
+  pc2 = new RTCPeerConnection(servers,pc_constraints);
+  console.log("Created remote peer connection object pc2");
+  pc2.onicecandidate = iceCallback2;
+  pc2.onaddstream = gotRemoteStream; 
+  console.log("Requesting local stream");
+  // Call into getUserMedia via the polyfill (adapter.js).
+  getUserMedia({audio:true, video:false},
+                gotStream, function() {});
+}
+
+function gotDescription1(desc){
+  pc1.setLocalDescription(desc);
+  trace("Offer from pc1 \n" + desc.sdp);
+  pc2.setRemoteDescription(desc);
+  // Since the "remote" side has no media stream we need
+  // to pass in the right constraints in order for it to
+  // accept the incoming offer of audio.
+  pc2.createAnswer(gotDescription2, null, sdpConstraints);
+}
+
+function gotDescription2(desc){
+  pc2.setLocalDescription(desc);
+  trace("Answer from pc2 \n" + desc.sdp);
+  pc1.setRemoteDescription(desc);
+}
+
+function hangup() {
+  trace("Ending call");
+  pc1.close(); 
+  pc2.close();
+  pc1 = null;
+  pc2 = null;
+  $('.button_call').button('toggle');
+  $('.button_hangup').button('toggle');
+}
+
+function gotRemoteStream(e){
+  audio2.src = webkitURL.createObjectURL(e.stream);
+  trace("Received remote stream");
+}
+
+function iceCallback1(event){
+  if (event.candidate) {
+    pc2.addIceCandidate(new RTCIceCandidate(event.candidate));
+    trace("Local ICE candidate: \n" + event.candidate.candidate);
+  }
+}
+      
+function iceCallback2(event){
+  if (event.candidate) {
+    pc1.addIceCandidate(new RTCIceCandidate(event.candidate));
+    trace("Remote ICE candidate: \n " + event.candidate.candidate);
+  }
+}
+</script>
 {% endblock %}
